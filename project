@@ -1,0 +1,168 @@
+import java.util.*;
+
+// Enum for User Roles
+enum UserRole {
+    ADMIN,
+    STORE_MANAGER,
+    STORE_STAFF
+}
+
+// Enum for Store Type
+enum StoreType {
+    RETAIL,
+    WAREHOUSE
+}
+
+//Class for Store
+class Store {
+ private String name;
+ private String location;
+ private String contactInfo;
+ private StoreType storeType;
+ private Date openingDate;
+
+ public Store(String name, String location, String contactInfo, StoreType storeType, Date openingDate) {
+     this.name = name;
+     this.location = location;
+     this.contactInfo = contactInfo;
+     this.storeType = storeType;
+     this.openingDate = openingDate;
+ }
+
+ public String getName() {
+     return name;
+ }
+
+ // Other getter and setter methods for store details
+
+ @Override
+ public String toString() {
+     return "Store [name=" + name + ", location=" + location + ", storeType=" + storeType + ", openingDate=" + openingDate + "]";
+ }
+}
+
+
+// Class for Item
+class Item {
+    private String name;
+    private String description;
+    private String category;
+    private double price;
+    private int initialQuantity;
+
+    public Item(String name, String description, String category, double price, int initialQuantity) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.initialQuantity = initialQuantity;
+    }
+
+    // Getters and setters for item detail
+
+    @Override
+    public String toString() {
+        return "Item [name=" + name + ", category=" + category + ", price=" + price + "]";
+    }
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
+
+// Class for Inventory Management
+class InventoryManager {
+    private Map<Store, Map<Item, Integer>> inventory = new HashMap<>();
+
+    // Method to add items to a store's inventory
+    public void addItemToStore(Store store, Item item, int quantity) {
+        Map<Item, Integer> storeInventory = inventory.getOrDefault(store, new HashMap<>());
+        storeInventory.put(item, storeInventory.getOrDefault(item, 0) + quantity);
+        inventory.put(store, storeInventory);
+    }
+
+    // Method to track real-time inventory levels
+    public int getInventoryLevel(Store store, Item item) {
+        Map<Item, Integer> storeInventory = inventory.get(store);
+        if (storeInventory != null) {
+            return storeInventory.getOrDefault(item, 0);
+        }
+        return 0;
+    }
+
+    // Method to notify store managers when stock reaches predefined thresholds
+    public void notifyLowStock(Store store, Item item, int threshold) {
+        int currentStock = getInventoryLevel(store, item);
+        if (currentStock < threshold) {
+            // Notify store manager
+            System.out.println("Low stock alert for " + item.getName() + " in " + store.getName());
+        }
+    }
+}
+
+// Class for Purchase Order
+class PurchaseOrder {
+    private static int orderCounter = 0;
+    private int orderNumber;
+    private Store store;
+    private Item item;
+    private int quantity;
+    private String supplierDetails;
+    private String orderStatus;
+
+    public PurchaseOrder(Store store, Item item, int quantity) {
+        this.orderNumber = ++orderCounter;
+        this.store = store;
+        this.item = item;
+        this.quantity = quantity;
+        this.supplierDetails = "Supplier details based on item category";
+        this.orderStatus = "Pending";
+    }
+
+    // Getters and setters for purchase order details
+    // ...
+
+    @Override
+    public String toString() {
+        return "PurchaseOrder [orderNumber=" + orderNumber + ", item=" + item.getName() + ", quantity=" + quantity + ", orderStatus=" + orderStatus + "]";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create sample users with roles
+        Map<UserRole, Set<String>> userRoles = new HashMap<>();
+        userRoles.put(UserRole.ADMIN, new HashSet<>(Arrays.asList("admin1")));
+        userRoles.put(UserRole.STORE_MANAGER, new HashSet<>(Arrays.asList("manager1")));
+        userRoles.put(UserRole.STORE_STAFF, new HashSet<>(Arrays.asList("staff1")));
+
+        // Sample stores
+        Store store1 = new Store("Main St.", "Downtown", "803-111-2234", StoreType.RETAIL, new Date());
+        Store store2 = new Store("Dave Lyle", "Manchester", "803-112-2235", StoreType.WAREHOUSE, new Date());
+        Store store3 = new Store("Cherry St", "Ballantyne", "704-213-8045", StoreType.WAREHOUSE, new Date());
+
+        // Sample items
+        Item item1 = new Item("Item 1", "Description 1", "Category A", 10.0, 100);
+        Item item2 = new Item("Item 2", "Description 2", "Category B", 15.0, 50);
+        Item item3 = new Item("Item 3", "Description 3", "Category C", 20.0, 45);
+
+        // Inventory manager
+        InventoryManager inventoryManager = new InventoryManager();
+
+        // Items at stores
+        inventoryManager.addItemToStore(store1, item1, 50);
+        inventoryManager.addItemToStore(store1, item2, 30);
+        inventoryManager.addItemToStore(store2, item2, 20);
+        inventoryManager.addItemToStore(store2, item1, 40);
+        inventoryManager.addItemToStore(store3, item3, 80);
+        
+        // Check inventory levels and notify low stock
+        System.out.println("Inventory level of Item 1 at Main St. Location: " + inventoryManager.getInventoryLevel(store1, item1));
+        inventoryManager.notifyLowStock(store1, item1, 20);
+
+        // Create a purchase order
+        PurchaseOrder purchaseOrder1 = new PurchaseOrder(store1, item1, 30);
+        System.out.println("Created Purchase Order: " + purchaseOrder1);
+    }
+}
