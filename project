@@ -153,11 +153,14 @@ public class Main {
         // Items at stores
         inventoryManager.addItemToStore(store1, item1, 50);
         inventoryManager.addItemToStore(store1, item2, 30);
-        inventoryManager.addItemToStore(store2, item2, 20);
+        inventoryManager.addItemToStore(store1, item3, 1);
         inventoryManager.addItemToStore(store2, item1, 40);
+        inventoryManager.addItemToStore(store2, item2, 20);
+        inventoryManager.addItemToStore(store2, item3, 0);
+        inventoryManager.addItemToStore(store3, item1, 5);
         inventoryManager.addItemToStore(store3, item2, 60);
         inventoryManager.addItemToStore(store3, item3, 80);
-        inventoryManager.addItemToStore(store3, item1, 5);
+      
         
         // Check inventory levels and notify low stock
         System.out.println("Inventory level of Item 1 at Main St. Location: " + inventoryManager.getInventoryLevel(store1, item1));
@@ -175,3 +178,4 @@ public class Main {
     }
 }
 
+			
