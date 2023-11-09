@@ -161,6 +161,12 @@ public class Main {
         System.out.println("Inventory level of Item 1 at Main St. Location: " + inventoryManager.getInventoryLevel(store1, item1));
         inventoryManager.notifyLowStock(store1, item1, 20);
 
+        System.out.println("Inventory level of Item 2 at Dave Lyle: " + inventoryManager.getInventoryLevel(store2, item1));
+        inventoryManager.notifyLowStock(store2, item1, 20);
+        
+        System.out.println("Inventory level of Item 3 at Ballantyne: " + inventoryManager.getInventoryLevel(store3, item1));
+        inventoryManager.notifyLowStock(store3, item1, 20);
+        
         // Create a purchase order
         PurchaseOrder purchaseOrder1 = new PurchaseOrder(store1, item1, 30);
         System.out.println("Created Purchase Order: " + purchaseOrder1);
